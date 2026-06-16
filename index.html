@@ -348,11 +348,9 @@ function showAiWhy(dIdx){
 
   var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgkS45kGFl1s-8z-W2nFdO4YQYEE-I3DbM2XbZ5G4sQUsA6uJaxu3X6GNTg5LZJmBvWg/exec";
 
-  fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt: promptData })
-  })
+  var whyUrl = APPS_SCRIPT_URL + "?serve=why&prompt=" + encodeURIComponent(promptData);
+
+  fetch(whyUrl, { redirect: "follow" })
   .then(function(r){ return r.json(); })
   .then(function(r){
     var text = r.text || "Unable to generate analysis.";
