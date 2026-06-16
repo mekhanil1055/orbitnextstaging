@@ -346,19 +346,16 @@ function showAiWhy(dIdx){
 
   var systemPrompt="You are a PMO analyst reviewing an OrbitNext 2.0 initiative tracker for InApp, an IT services company targeting 25M to 50M USD revenue growth. Your role is to give a concise, contextual explanation of why an initiative has its current score — written for a CEO and leadership team, not a technical audience. Be direct, specific, and use the actual milestone names and metric names from the data. Do not explain the scoring formula. Do not say things like 'based on the data'. Write 3-4 sentences maximum. Focus on what is actually happening — what is done, what is stuck, what is missing, and what the risk is if nothing changes.";
 
-  fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      model:"claude-sonnet-4-6",
-      max_tokens:1000,
-      system:systemPrompt,
-      messages:[{role:"user",content:promptData}]
-    })
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgkS45kGFl1s-8z-W2nFdO4YQYEE-I3DbM2XbZ5G4sQUsA6uJaxu3X6GNTg5LZJmBvWg/exec";
+
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: promptData })
   })
-  .then(function(r){return r.json();})
+  .then(function(r){ return r.json(); })
   .then(function(r){
-    var text=(r.content&&r.content[0]&&r.content[0].text)||"Unable to generate analysis.";
+    var text = r.text || "Unable to generate analysis.";
 
     // Build signals list
     var signals=[];
